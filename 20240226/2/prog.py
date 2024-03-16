@@ -4,7 +4,7 @@ player = [0,0]
 monsters = {}
 
 def encounter(x,y):
-    print(cowsay.cowsay(monsters[x*10+y][1]))
+    print(cowsay.cowsay(monsters[x*10+y][1], cow = monsters[x*10+y][0]))
 
 def moving(c):
     rc = True
