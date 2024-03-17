@@ -2,6 +2,8 @@ import cowsay
 import shlex
 import io
 import sys
+import cmd
+
 
 player = [0,0]
 monsters = {}
@@ -58,15 +60,40 @@ def addmon(name, x, y, hello, hitpoints):
     if oldmon:
         print("Replaced the old monster")
 
+class GameCmd(cmd.Cmd):
 
-print("<<< Welcome to Python-MUD 0.1 >>>")
+    prompt = ">> "
 
-while command := shlex.split(sys.stdin.readline()):
-    if len(command) == 1:
-        moving(command[0])
-    elif len(command) == 9 and command[0] == "addmon":
-        if "hello" in command and "hp" in command and "coords" in command:
-            name = command[1]
+    def __init__(self):
+        print("<<< Welcome to Python-MUD 0.1 >>>")
+        return super().__init__()
+
+    
+    def do_up(self, args):
+        "moves up"
+        moving("up")
+
+
+    def do_down(self, args):
+        "moves down"
+        moving("down")
+
+
+    def do_left(self, args):
+        "moves left"
+        moving("left")
+
+
+    def do_right(self, args):
+        "moves right"
+        moving("right")
+
+
+    def do_addmon(self, args):
+        "add monster"
+        command = shlex.split(args)
+        if len(command) == 8 and "hello" in command and "hp" in command and "coords" in command:
+            name = command[0]
             hello_string = command[command.index("hello")+1]
             hitpoints = command[command.index("hp")+1]
             x = command[command.index("coords")+1]
@@ -81,5 +108,7 @@ while command := shlex.split(sys.stdin.readline()):
 
         else:
             print("Invalid arguments")
-    else:
-        print("Invalid command")
+    
+
+if __name__ == '__main__':
+    GameCmd().cmdloop()
