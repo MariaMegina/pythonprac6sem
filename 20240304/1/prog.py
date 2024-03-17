@@ -4,8 +4,27 @@ import io
 player = [0,0]
 monsters = {}
 
+jgsbat = cowsay.read_dot_cow(io.StringIO('''
+$the_cow = <<EOC;
+         $thoughts
+          $thoughts
+    ,_                    _,
+    ) '-._  ,_    _,  _.-' (
+    )  _.-'.|\\--//|.'-._  (
+     )'   .'\/o\/o\/'.   `(
+      ) .' . \====/ . '. (
+       )  / <<    >> \  (
+        '-._/``  ``\_.-'
+  jgs     __\\'--'//__
+         (((""`  `"")))
+EOC
+'''))
+
 def encounter(x,y):
-    print(cowsay.cowsay(monsters[x*10+y][1], cow = monsters[x*10+y][0]))
+    if monsters[x*10+y][0] == "jgsbat":
+        print(cowsay.cowsay(monsters[x*10+y][1], cowfile = jgsbat))
+    else:
+        print(cowsay.cowsay(monsters[x*10+y][1], cow = monsters[x*10+y][0]))
 
 def moving(c):
     rc = True
@@ -26,7 +45,7 @@ def moving(c):
             encounter(player[0], player[1])
 
 def addmon(name, x, y, hello):
-    if name not in cowsay.list_cows():
+    if name not in cowsay.list_cows() and name != "jgsbat":
         print("Cannot add unknown monster")
         return
     oldmon = False
