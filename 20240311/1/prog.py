@@ -108,6 +108,16 @@ class GameCmd(cmd.Cmd):
 
         else:
             print("Invalid arguments")
+
+
+    def do_EOF(self, line):
+        "stop game"
+        return 1
+
+
+    def emptyline(self):
+        "do nothing"
+        return
     
 
 if __name__ == '__main__':
