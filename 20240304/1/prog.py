@@ -56,6 +56,8 @@ def addmon(name, x, y, hello):
     if oldmon:
         print("Replaced the old monster")
 
+print("<<< Welcome to Python-MUD 0.1 >>>")
+
 while command := input().split():
     if len(command) == 1:
         moving(command[0])
