@@ -60,6 +60,7 @@ def addmon(name, x, y, hello, hitpoints):
     if oldmon:
         print("Replaced the old monster")
 
+
 class GameCmd(cmd.Cmd):
 
     prompt = ">> "
@@ -118,7 +119,26 @@ class GameCmd(cmd.Cmd):
     def emptyline(self):
         "do nothing"
         return
-    
+
+
+    def do_attack(self, args):
+        "monster attack"
+        if (player[0]*10 + player[1]) not in monsters:
+            print("No monster here")
+            return
+        else:
+            mon = monsters[player[0]*10 + player[1]]
+            if mon[2] <= 10:
+                print(f"Attacked {mon[0]}, damage {mon[2]} hp")
+                print(f"{mon[0]} died")
+                del monsters[player[0]*10 + player[1]]
+
+            else:
+                print(f"Attacked {mon[0]}, damage 10 hp")
+                mon[2]-=10
+                print(f"{mon[0]} now has {mon[2]}")
+
+
 
 if __name__ == '__main__':
     GameCmd().cmdloop()
