@@ -61,6 +61,30 @@ def addmon(name, x, y, hello, hitpoints):
         print("Replaced the old monster")
 
 
+def attack(weapon = "sword"):
+    if weapon == "sword":
+        dmg = 10
+    elif weapon == "spear":
+        dmg = 15
+    elif weapon == "axe":
+        dmg = 20
+    else:
+        print("Unknown weapon")
+        return
+    if (player[0]*10 + player[1]) not in monsters:
+        print("No monster here")
+        return
+    else:
+        mon = monsters[player[0]*10 + player[1]]
+        print(f"Attacked {mon[0]}, damage {dmg} hp")
+        mon[2]-=dmg
+        if mon[2] <= 0:
+            print(f"{mon[0]} died")
+            del monsters[player[0]*10 + player[1]]
+        else:
+            print(f"{mon[0]} now has {mon[2]}")
+
+
 class GameCmd(cmd.Cmd):
 
     prompt = ">> "
@@ -123,20 +147,20 @@ class GameCmd(cmd.Cmd):
 
     def do_attack(self, args):
         "monster attack"
-        if (player[0]*10 + player[1]) not in monsters:
-            print("No monster here")
-            return
+        command = shlex.split(args)
+        if len(command) == 0:
+            attack()   
+        elif len(command) == 2 and command[0] == "with":
+            attack(command[1])
         else:
-            mon = monsters[player[0]*10 + player[1]]
-            if mon[2] <= 10:
-                print(f"Attacked {mon[0]}, damage {mon[2]} hp")
-                print(f"{mon[0]} died")
-                del monsters[player[0]*10 + player[1]]
+            print("Invalid command")
+    
 
-            else:
-                print(f"Attacked {mon[0]}, damage 10 hp")
-                mon[2]-=10
-                print(f"{mon[0]} now has {mon[2]}")
+    def complete_attack(self, text, line, begidx, endidx):
+        weapons = ["sword", "spear", "axe"]
+        command = (line[:endidx]).split()
+        if "with" in command:
+            return [weapon for weapon in weapons if weapon.startswith(text)]
 
 
 
