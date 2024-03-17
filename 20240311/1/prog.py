@@ -61,6 +61,26 @@ def addmon(name, x, y, hello, hitpoints):
         print("Replaced the old monster")
 
 
+def attack(name):
+    if (player[0]*10 + player[1]) not in monsters:
+        print("No monster here")
+        return
+    else:
+        dmg = 10
+        mon = monsters[player[0]*10 + player[1]]
+        if mon[0] != name:
+            print(f"No {name} in here")
+            return
+        print(f"Attacked {mon[0]}, damage {dmg} hp")
+        mon[2]-=dmg
+        if mon[2] <= 0:
+            print(f"{mon[0]} died")
+            del monsters[player[0]*10 + player[1]]
+        else:
+            print(f"{mon[0]} now has {mon[2]}")
+
+
+
 class GameCmd(cmd.Cmd):
 
     prompt = ">> "
@@ -123,20 +143,17 @@ class GameCmd(cmd.Cmd):
 
     def do_attack(self, args):
         "monster attack"
-        if (player[0]*10 + player[1]) not in monsters:
-            print("No monster here")
-            return
+        command = shlex.split(args)
+        if len(command) == 1:
+            attack(command[0])
         else:
-            mon = monsters[player[0]*10 + player[1]]
-            if mon[2] <= 10:
-                print(f"Attacked {mon[0]}, damage {mon[2]} hp")
-                print(f"{mon[0]} died")
-                del monsters[player[0]*10 + player[1]]
+            print("Invalid command")
 
-            else:
-                print(f"Attacked {mon[0]}, damage 10 hp")
-                mon[2]-=10
-                print(f"{mon[0]} now has {mon[2]}")
+    
+    def complete_attack(self, text, line, begidx, endidx):
+        monster_names = cowsay.list_cows() + ["jgsbat"]
+        command = (line[:endidx]).split()
+        return [name for name in monster_names if name.startswith(text)]
 
 
 
