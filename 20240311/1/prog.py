@@ -61,21 +61,27 @@ def addmon(name, x, y, hello, hitpoints):
         print("Replaced the old monster")
 
 
-def attack(weapon = "sword"):
-    if weapon == "sword":
-        dmg = 10
-    elif weapon == "spear":
-        dmg = 15
-    elif weapon == "axe":
-        dmg = 20
-    else:
-        print("Unknown weapon")
-        return
+
+def attack(name, weapon = "sword"):
     if (player[0]*10 + player[1]) not in monsters:
         print("No monster here")
         return
     else:
         mon = monsters[player[0]*10 + player[1]]
+        if weapon == "sword":
+            dmg = 10
+        elif weapon == "spear":
+            dmg = 15
+        elif weapon == "axe":
+            dmg = 20
+        else:
+            print("Unknown weapon")
+            return
+
+        if mon[0] != name:
+            print(f"No {name} in here")
+            return
+
         print(f"Attacked {mon[0]}, damage {dmg} hp")
         mon[2]-=dmg
         if mon[2] <= 0:
@@ -83,6 +89,7 @@ def attack(weapon = "sword"):
             del monsters[player[0]*10 + player[1]]
         else:
             print(f"{mon[0]} now has {mon[2]}")
+
 
 
 class GameCmd(cmd.Cmd):
@@ -148,19 +155,24 @@ class GameCmd(cmd.Cmd):
     def do_attack(self, args):
         "monster attack"
         command = shlex.split(args)
-        if len(command) == 0:
-            attack()   
-        elif len(command) == 2 and command[0] == "with":
-            attack(command[1])
+        if len(command) ==  1:
+            attack(command[0])   
+        elif len(command) == 3 and command[1] == "with":
+            attack(command[0], command[2])
         else:
             print("Invalid command")
     
 
+    
     def complete_attack(self, text, line, begidx, endidx):
         weapons = ["sword", "spear", "axe"]
+        monster_names = cowsay.list_cows() + ["jgsbat"]
         command = (line[:endidx]).split()
         if "with" in command:
             return [weapon for weapon in weapons if weapon.startswith(text)]
+        else:
+            return [name for name in monster_names if name.startswith(text)]
+
 
 
 
