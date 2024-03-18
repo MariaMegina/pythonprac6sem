@@ -1,0 +1,64 @@
+--- file1	2024-03-18 13:09:26.181552778 +0300
++++ file2	2024-03-18 13:10:49.682717554 +0300
+@@ -67,7 +67,7 @@
+ root          84       2  0 12:40 ?        00:00:00 [nvme-reset-wq]
+ root          85       2  0 12:40 ?        00:00:00 [nvme-delete-wq]
+ root          86       2  0 12:40 ?        00:00:00 [mld]
+-root          87       2  0 12:40 ?        00:00:00 [kworker/1:1H-events_highpri]
++root          87       2  0 12:40 ?        00:00:00 [kworker/1:1H-kblockd]
+ root          88       2  0 12:40 ?        00:00:00 [ipv6_addrconf]
+ root          89       2  0 12:40 ?        00:00:00 [kstrp]
+ root          95       2  0 12:40 ?        00:00:00 [zswap-shrink]
+@@ -78,7 +78,7 @@
+ root         375       2  0 12:40 ?        00:00:00 [rpciod]
+ root         376       2  0 12:40 ?        00:00:00 [xprtiod]
+ root         377       2  0 12:40 ?        00:00:00 [nfsiod]
+-root         413       2  0 12:40 ?        00:00:00 [kworker/6:1H-events_highpri]
++root         413       2  0 12:40 ?        00:00:00 [kworker/6:1H-kblockd]
+ root         415       2  0 12:40 ?        00:00:00 [kworker/4:1H-events_highpri]
+ root         418       2  0 12:40 ?        00:00:00 [kworker/3:1H-events_highpri]
+ root         434       2  0 12:40 ?        00:00:00 [kworker/7:1H-events_highpri]
+@@ -126,7 +126,7 @@
+ root        2843       1  0 12:40 ?        00:00:00 /usr/sbin/crond -n
+ root        2844       2  0 12:40 ?        00:00:00 [kworker/3:3-cgroup_destroy]
+ root        2845       1  0 12:40 ?        00:00:00 /usr/sbin/lightdm
+-root        2873    2845  2 12:40 tty1     00:00:37 X -nolisten tcp :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt1 -novtswitch
++root        2873    2845  2 12:40 tty1     00:00:38 X -nolisten tcp :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt1 -novtswitch
+ root        2908       2  0 12:40 ?        00:00:00 [kworker/4:3-events]
+ root        2993    2845  0 12:41 ?        00:00:00 lightdm --session-child 15 22
+ s022004+    3014       1  0 12:41 ?        00:00:00 /lib/systemd/systemd --user
+@@ -151,7 +151,7 @@
+ s022004+    3256    3031  0 12:41 ?        00:00:02 /usr/bin/caja
+ s022004+    3258    3014  0 12:41 ?        00:00:00 /usr/libexec/gvfs/gvfs-udisks2-volume-monitor
+ s022004+    3268    3014  0 12:41 ?        00:00:00 /usr/libexec/gvfs/gvfs-gphoto2-volume-monitor
+-s022004+    3270    3031  0 12:41 ?        00:00:04 parcellite
++s022004+    3270    3031  0 12:41 ?        00:00:05 parcellite
+ s022004+    3272    3031  0 12:41 ?        00:00:00 /usr/libexec/polkit-mate-authentication-agent-1
+ s022004+    3277    3031  0 12:41 ?        00:00:00 mate-power-manager
+ s022004+    3278    3031  0 12:41 ?        00:00:00 mate-volume-control-status-icon
+@@ -159,7 +159,7 @@
+ s022004+    3286    3031  0 12:41 ?        00:00:00 nm-applet
+ s022004+    3366    3198  0 12:41 ?        00:00:00 /usr/libexec/gvfs/gvfsd-trash --spawner :1.13 /org/gtk/gvfs/exec_spaw/0
+ s022004+    3403    3014  0 12:41 ?        00:00:00 /usr/libexec/gvfs/gvfsd-metadata
+-s022004+    3426    3199  4 12:41 ?        00:01:20 /usr/bin/firefox --name firefox
++s022004+    3426    3199  4 12:41 ?        00:01:21 /usr/bin/firefox --name firefox
+ root        3464       1  0 12:41 ?        00:00:00 /usr/sbin/pcscd --foreground --auto-exit
+ s022004+    3525    3426  0 12:41 ?        00:00:00 /usr/lib64/firefox/firefox -contentproc -parentBuildID 20240109231916 -prefsLen 26703 -prefMapSize 234737 -appDir /usr/lib64/firefox/browser {823c3e4f-d9ae-42ec-b324-4c3455e5a3d3} 3426 socket
+ s022004+    3581    3426  0 12:41 ?        00:00:06 /usr/lib64/firefox/firefox -contentproc -childID 1 -isForBrowser -prefsLen 27053 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {fdcb63f3-8bc4-46e9-b303-815088d5bb5f} 3426 tab
+@@ -171,7 +171,7 @@
+ s022004+    3859    3426  0 12:41 ?        00:00:10 /usr/lib64/firefox/firefox -contentproc -childID 9 -isForBrowser -prefsLen 29669 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {817aebd0-7a7e-48eb-b7be-3cd4005b126a} 3426 tab
+ s022004+    3910    3426  0 12:42 ?        00:00:00 /usr/lib64/firefox/firefox -contentproc -childID 10 -isForBrowser -prefsLen 29669 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {86ad00ca-1eff-4be0-b872-c9b87f8a2d81} 3426 tab
+ s022004+    3953    3426  0 12:42 ?        00:00:00 /usr/lib64/firefox/firefox -contentproc -childID 11 -isForBrowser -prefsLen 29669 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {8b395c36-b202-4a93-bb68-6543f9a0011c} 3426 tab
+-s022004+    3993    3256  0 12:42 ?        00:00:02 /usr/bin/mate-terminal
++s022004+    3993    3256  0 12:42 ?        00:00:03 /usr/bin/mate-terminal
+ s022004+    4037    3993  0 12:42 pts/0    00:00:00 bash
+ s022004+    4098    3426  0 12:42 ?        00:00:00 /usr/lib64/firefox/firefox -contentproc -childID 12 -isForBrowser -prefsLen 30588 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {13879e5d-e17d-4aec-b289-ed668447c939} 3426 tab
+ s022004+    4101    3426  0 12:42 ?        00:00:00 /usr/lib64/firefox/firefox -contentproc -childID 13 -isForBrowser -prefsLen 30588 -prefMapSize 234737 -jsInitLen 229864 -parentBuildID 20240109231916 -greomni /usr/lib64/firefox/omni.ja -appomni /usr/lib64/firefox/browser/omni.ja -appDir /usr/lib64/firefox/browser {aa60a6c3-3443-4a70-bc63-a9c07f7bb269} 3426 tab
+@@ -193,4 +193,6 @@
+ root        4816    2110  0 13:06 ?        00:00:00 systemd-userwork: waiting...
+ root        4820    2110  0 13:06 ?        00:00:00 systemd-userwork: waiting...
+ root        4836       2  0 13:08 ?        00:00:00 [kworker/1:1-cgroup_destroy]
+-s022004+    4842    4037 99 13:09 pts/0    00:00:00 ps -ef
++root        4844       2  0 13:09 ?        00:00:00 [kworker/u16:0-rpciod]
++root        4855       2  0 13:10 ?        00:00:00 [kworker/0:2-cgroup_destroy]
++s022004+    4861    4037  0 13:10 pts/0    00:00:00 ps -ef
