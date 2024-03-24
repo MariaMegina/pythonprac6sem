@@ -1,0 +1,109 @@
+From 923e37947e5dc5345843fcf079b5d44ad48c2617 Mon Sep 17 00:00:00 2001
+From: Maria <meginam16@gmail.com>
+Date: Sun, 24 Mar 2024 19:11:54 +0300
+Subject: [PATCH 1/4] Deleted GameCmd
+
+---
+ 20240318/1/prog.py | 89 ----------------------------------------------
+ 1 file changed, 89 deletions(-)
+
+diff --git a/20240318/1/prog.py b/20240318/1/prog.py
+index 34fce08..a9db804 100644
+--- a/20240318/1/prog.py
++++ b/20240318/1/prog.py
+@@ -89,92 +89,3 @@ def attack(name, weapon = "sword"):
+             del monsters[player[0]*10 + player[1]]
+         else:
+             print(f"{mon[0]} now has {mon[2]}")
+-
+-
+-
+-class GameCmd(cmd.Cmd):
+-
+-    prompt = ">> "
+-
+-    def __init__(self):
+-        print("<<< Welcome to Python-MUD 0.1 >>>")
+-        return super().__init__()
+-
+-    
+-    def do_up(self, args):
+-        "moves up"
+-        moving("up")
+-
+-
+-    def do_down(self, args):
+-        "moves down"
+-        moving("down")
+-
+-
+-    def do_left(self, args):
+-        "moves left"
+-        moving("left")
+-
+-
+-    def do_right(self, args):
+-        "moves right"
+-        moving("right")
+-
+-
+-    def do_addmon(self, args):
+-        "add monster"
+-        command = shlex.split(args)
+-        if len(command) == 8 and "hello" in command and "hp" in command and "coords" in command:
+-            name = command[0]
+-            hello_string = command[command.index("hello")+1]
+-            hitpoints = command[command.index("hp")+1]
+-            x = command[command.index("coords")+1]
+-            y = command[command.index("coords")+2]
+-            if hitpoints.isdigit() and x.isdigit() and y.isdigit() and "0" <= x <= "9" and "0" <= y <= "9":
+-                hitpoints = int(hitpoints)
+-                x = int(x)
+-                y = int(y)
+-                addmon(name, x, y, hello_string, hitpoints)
+-            else:
+-                print("Invalid arguments")
+-
+-        else:
+-            print("Invalid arguments")
+-
+-
+-    def do_EOF(self, line):
+-        "stop game"
+-        return 1
+-
+-
+-    def emptyline(self):
+-        "do nothing"
+-        return
+-
+-
+-    def do_attack(self, args):
+-        "monster attack"
+-        command = shlex.split(args)
+-        if len(command) ==  1:
+-            attack(command[0])   
+-        elif len(command) == 3 and command[1] == "with":
+-            attack(command[0], command[2])
+-        else:
+-            print("Invalid command")
+-    
+-
+-    
+-    def complete_attack(self, text, line, begidx, endidx):
+-        weapons = ["sword", "spear", "axe"]
+-        monster_names = cowsay.list_cows() + ["jgsbat"]
+-        command = (line[:endidx]).split()
+-        if "with" in command:
+-            return [weapon for weapon in weapons if weapon.startswith(text)]
+-        else:
+-            return [name for name in monster_names if name.startswith(text)]
+-
+-
+-
+-
+-if __name__ == '__main__':
+-    GameCmd().cmdloop()
+-- 
+2.34.1
+

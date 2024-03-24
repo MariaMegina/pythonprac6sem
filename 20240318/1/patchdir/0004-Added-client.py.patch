@@ -1,0 +1,29 @@
+From 0fa73d4250dc81e4f1b0db7e6fbd924a316dc6cd Mon Sep 17 00:00:00 2001
+From: Maria <meginam16@gmail.com>
+Date: Sun, 24 Mar 2024 20:57:36 +0300
+Subject: [PATCH 4/4] Added client.py
+
+---
+ 20240318/1/client.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+ create mode 100644 20240318/1/client.py
+
+diff --git a/20240318/1/client.py b/20240318/1/client.py
+new file mode 100644
+index 0000000..14392e3
+--- /dev/null
++++ b/20240318/1/client.py
+@@ -0,0 +1,10 @@
++import sys
++import socket
++
++host = "localhost" if len(sys.argv) < 2 else sys.argv[1]
++port = 1333 if len(sys.argv) < 3 else int(sys.argv[2])
++with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
++    s.connect((host, port))
++    while msg := sys.stdin.buffer.readline():
++        s.sendall(msg)
++        print(s.recv(1024).rstrip().decode())
+-- 
+2.34.1
+

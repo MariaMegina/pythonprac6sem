@@ -1,0 +1,118 @@
+From 573ee3f52b4be44a496ccb3d6b6ec479b650c43f Mon Sep 17 00:00:00 2001
+From: Maria <meginam16@gmail.com>
+Date: Sun, 24 Mar 2024 20:56:57 +0300
+Subject: [PATCH 3/4] Some fixing in server
+
+---
+ 20240318/1/prog.py | 62 +++++++++++++++++++++-------------------------
+ 1 file changed, 28 insertions(+), 34 deletions(-)
+
+diff --git a/20240318/1/prog.py b/20240318/1/prog.py
+index aaed023..435be7d 100644
+--- a/20240318/1/prog.py
++++ b/20240318/1/prog.py
+@@ -28,27 +28,17 @@ EOC
+ 
+ def encounter(x,y):
+     if monsters[x*10+y][0] == "jgsbat":
+-        print(cowsay.cowsay(monsters[x*10+y][1], cowfile = jgsbat))
++        return (cowsay.cowsay(monsters[x*10+y][1], cowfile = jgsbat))
+     else:
+-        print(cowsay.cowsay(monsters[x*10+y][1], cow = monsters[x*10+y][0]))
+-
+-def moving(c):
+-    rc = True
+-    if c == 'up':
+-        player[1] = (player[1] - 1) % 10
+-    elif c == 'down':
+-        player[1] = (player[1] + 1) % 10
+-    elif c == 'left':
+-        player[0] = (player[0] - 1) % 10
+-    elif c == 'right':
+-        player[0] = (player[0] + 1) % 10
+-    else:
+-        rc = False
+-        print("Invalid command")
+-    if rc:
+-        print(f"Moved to ({player[0]}, {player[1]})")
+-        if (player[0]*10 + player[1]) in monsters:
+-            encounter(player[0], player[1])
++        return(cowsay.cowsay(monsters[x*10+y][1], cow = monsters[x*10+y][0]))
++
++def moving(x, y):
++    player[0] = (player[0] + x) % 10
++    player[1] = (player[1] + y) % 10
++    responce = (f"Moved to ({player[0]}, {player[1]})")
++    if (player[0]*10 + player[1]) in monsters:
++    	responce += encounter(player[0], player[1])
++    return responce
+ 
+ def addmon(name, x, y, hello, hitpoints):
+     if name not in cowsay.list_cows() and name != "jgsbat":
+@@ -58,9 +48,10 @@ def addmon(name, x, y, hello, hitpoints):
+     if (x*10+y) in monsters:
+         oldmon = True
+     monsters[x*10+y] =[name, hello, hitpoints]
+-    print(f"Added monster {name} to ({x}, {y}) saying {hello}")
++    responce = (f"Added monster {name} to ({x}, {y}) saying {hello}")
+     if oldmon:
+-        print("Replaced the old monster")
++        responce += ("\nReplaced the old monster")
++    return responce
+ 
+ 
+ 
+@@ -84,35 +75,38 @@ def attack(name, weapon = "sword"):
+             print(f"No {name} in here")
+             return
+ 
+-        print(f"Attacked {mon[0]}, damage {dmg} hp")
++        responce = (f"Attacked {mon[0]}, damage {dmg} hp")
+         mon[2]-=dmg
+         if mon[2] <= 0:
+-            print(f"{mon[0]} died")
++            responce += (f"\n{mon[0]} died")
+             del monsters[player[0]*10 + player[1]]
+         else:
+-            print(f"{mon[0]} now has {mon[2]}")
++            responce += (f"\n{mon[0]} now has {mon[2]}")
++        return responce
+ 
+ 
+ def serve(conn, addr):
+     with conn:
+         print("Connected by", addr)
+         while data := conn.recv(1024):
+-            com, args* = shlex.split(data.decode())
++            com, *args = shlex.split(data.decode())
+             match com:
+                 case "move":
+-                    conn.sendall(moving(args).encode())
++                    conn.sendall(moving(int(args[0]), int(args[1])).encode())
+                 case "addmon":
+-                    conn.sendall(addmon(args).encode())
++                    conn.sendall(addmon(args[0], int(args[1]), int(args[2]), args[3], int(args[4])).encode())
+                 case "attack":
+-                    conn.sendall(attack(args).encode())
++                    if len(args) == 1:
++                        conn.sendall(attack(args[0]).encode())
++                    else:
++                        conn.sendall(attack(args[0], args[1]).encode())
+ 
+ 
+ 
+ host = "localhost" if len(sys.argv) < 2 else sys.argv[1]
+-port = 1337 if len(sys.argv) < 3 else int(sys.argv[2])
++port = 1333 if len(sys.argv) < 3 else int(sys.argv[2])
+ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+     s.bind((host, port))
+-    s.listen
+-    while True:
+-        conn, addr = s.accept()
+-        multiprocessing.Process(target = serve, args = (conn, addr)).start()
++    s.listen()
++    conn, addr = s.accept()
++    multiprocessing.Process(target = serve, args = (conn, addr)).start()
+-- 
+2.34.1
+
