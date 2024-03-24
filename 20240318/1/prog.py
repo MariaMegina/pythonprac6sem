@@ -3,6 +3,8 @@ import shlex
 import io
 import sys
 import cmd
+import socket
+import multiprocessing
 
 
 player = [0,0]
@@ -89,3 +91,28 @@ def attack(name, weapon = "sword"):
             del monsters[player[0]*10 + player[1]]
         else:
             print(f"{mon[0]} now has {mon[2]}")
+
+
+def serve(conn, addr):
+    with conn:
+        print("Connected by", addr)
+        while data := conn.recv(1024):
+            com, args* = shlex.split(data.decode())
+            match com:
+                case "move":
+                    conn.sendall(moving(args).encode())
+                case "addmon":
+                    conn.sendall(addmon(args).encode())
+                case "attack":
+                    conn.sendall(attack(args).encode())
+
+
+
+host = "localhost" if len(sys.argv) < 2 else sys.argv[1]
+port = 1337 if len(sys.argv) < 3 else int(sys.argv[2])
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((host, port))
+    s.listen
+    while True:
+        conn, addr = s.accept()
+        multiprocessing.Process(target = serve, args = (conn, addr)).start()
